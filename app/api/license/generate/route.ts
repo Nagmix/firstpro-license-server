@@ -1,4 +1,4 @@
-import { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { requireAdmin, successResponse, unauthorizedResponse, errorResponse, checkRateLimit, getClientIp } from "@/lib/utils";
 import { createLicense } from "@/lib/license";
 
@@ -41,5 +41,3 @@ export async function POST(request: NextRequest) {
     return errorResponse(err.message || "INTERNAL_ERROR", 500);
   }
 }
-
-import { NextResponse } from "next/server";

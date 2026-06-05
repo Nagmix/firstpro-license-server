@@ -37,15 +37,14 @@ export default function AdminDashboard() {
 
   const loadDashboard = async (token: string) => {
     try {
-      // Fetch stats in parallel
-      const [licensesRes, devicesRes, auditRes] = await Promise.all([
+      // Fetch stats and recent logs in parallel
+      const [licensesRes, logsRes] = await Promise.all([
         fetch("/api/admin/stats", {
           headers: { Authorization: `Bearer ${token}` },
-        }).catch(() => null),
+        }).catch(() => null) as Promise<Response | null>,
         fetch("/api/admin/recent-logs", {
           headers: { Authorization: `Bearer ${token}` },
-        }).catch(() => null),
-        Promise.resolve(null),
+        }).catch(() => null) as Promise<Response | null>,
       ]);
 
       if (licensesRes?.ok) {
@@ -55,8 +54,8 @@ export default function AdminDashboard() {
         }
       }
 
-      if (auditRes?.ok) {
-        const data = await auditRes.json();
+      if (logsRes?.ok) {
+        const data = await logsRes.json();
         if (data.success) {
           setRecentLogs(data.logs || []);
         }
